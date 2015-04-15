@@ -18,6 +18,9 @@ $(function(){
   }
 
   Storage.prototype = {
+    // prototypeのconstructor参照が消えないように
+    'constructor': Storage,
+
     // ローカルストレージ
     'storage': window.localStorage,
 
@@ -82,6 +85,9 @@ $(function(){
   }
 
   Star.prototype = {
+    // prototypeのconstructor参照が消えないように
+    'constructor': Storage,
+
     // お気に入りボタンが設置されたセルの文字列を取得して返す
     // この時、管理に不要な巻数やサブタイトルなどは除去する
     'getKeyword': function( type ){
