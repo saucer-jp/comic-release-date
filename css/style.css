@@ -1,0 +1,61 @@
+.CRD-starButton:after {
+  content: '★';
+  display: inline-block;
+  padding: 0 3px;
+  border-radius: 2px;
+  margin-right: 4px;
+  color: #ccc;
+  background: transparent;
+}
+td:hover {
+  cursor: pointer;
+}
+td:hover .CRD-starButton:after {
+  cursor: pointer;
+  background: #ddd;
+  color: #888;
+}
+tr[data-hightlight01="true"] td:hover .CRD-starButton:after ,
+tr[data-hightlight02="true"] td:hover .CRD-starButton:after {
+  cursor: pointer;
+  background: #ddd;
+  color: #ff6420;
+}
+.CRD-starButton[data-favorite="true"]:after {
+  color: #ff6420;
+  background: transparent;
+}
+#wrapper tr[data-hightlight01="true"] td ,
+#wrapper tr[data-hightlight02="true"] td {
+  background-color: #ddff7d;
+}
+#wrapper tr[data-hightlight01="true"] .comic_2_b ,
+#wrapper tr[data-hightlight02="true"] .comic_1_b {
+  /*
+  color: #ff6420;
+  */
+}
+
+#wrapper #container {
+  width: auto;
+}
+
+#wrapper #left_contents {
+  height: 1px;
+}
+
+#wrapper #right_contents {
+  width: 80%;
+  margin-left: 195px;
+  float: left;
+}
+
+#wrapper .table_box_new_book {
+  width: 100%;
+}
+
+#wrapper .table_box_new_book tbody tr td {
+  width: auto;
+  min-width: 60px;
+  padding: 6px 8px;
+}

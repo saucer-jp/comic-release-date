@@ -1,0 +1,30 @@
+{
+  "manifest_version": 2,
+  "name": "CRD",
+  "version": "0.0.1",
+  
+  "description": "お気に入りの漫画本をハイライトします",
+  "icons": {
+    "48": "icon.png",
+    "128": "icon.png"
+  },
+
+  "browser_action": {
+    "default_title": "CRD v0.0.1",
+    "default_icon": "icon.png",
+    "default_popup": "popup.html"
+  },
+  
+  "content_scripts": [{
+    "matches": ["http://www.taiyosha.co.jp/comic/*"],
+    "js": ["js/jquery-2.1.3.min.js","js/app.js"],
+    "css": ["css/style.css"]
+  }],
+  
+  "permissions": [
+    "tabs",
+    "storage"
+  ],
+  
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+}
