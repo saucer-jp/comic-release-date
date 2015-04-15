@@ -94,7 +94,6 @@ $(function(){
       var result = this.$cell.remove( '.' + this.className ).text();
       if( type === '01' ){ // 書名
         // 書名の正規表現は完全なタイトルを抽出するのではなく、大体合うレベル
-        //result = text.replace( /\S+　?\S+　?\S+/, '' ); // 漫画タイトルの先頭から全角スペース２つ分の文字を取得
         result = result.match( /\S+　?\S+　?/, '' ).toString(); // 漫画タイトルの先頭から全角スペース２つ分の文字を取得
         result = result.replace( /　[０-９]+.*$/, '' ); // 巻数とサブタイトルを削除
       }
