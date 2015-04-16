@@ -59,3 +59,30 @@ tr[data-hightlight02="true"] td:hover .CRD-starButton:after {
   min-width: 60px;
   padding: 6px 8px;
 }
+
+
+
+
+
+.CRD-refineButton {
+  float: right;
+  text-decoration: underline;
+  color: #3264ff;
+}
+.CRD-refineButton:hover {
+  cursor: pointer;
+  text-decoration: none;
+}
+.CRD-refineButton[data-refine="true"] :first-child,
+.CRD-refineButton[data-refine="false"] :last-child {
+  display: none;
+}
+
+#wrapper table[data-refine="true"] tr,
+#wrapper table[data-refine="true"] tr {
+  display: none;
+}
+#wrapper table[data-refine="true"] tr[data-hightlight01="true"],
+#wrapper table[data-refine="true"] tr[data-hightlight02="true"] {
+  display: table-row;
+}
