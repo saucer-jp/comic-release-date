@@ -8,9 +8,11 @@ $(function(){
   // =========================
 
   // モデル
+
+  // ------------------------
+  // データ管理用クラス
   // ------------------------
 
-  // データ管理用クラス
   function Storage( STORAGEKEY, keywords ){
     this.storageKey = STORAGEKEY;
     this.keywords = keywords;
@@ -71,9 +73,11 @@ $(function(){
 
 
   // ビューとコントローラー
+
+  // ------------------------
+  // 画面に表示されるお気に入りボタンクラス
   // ------------------------
 
-  // 画面に表示されるお気に入りボタンクラス
   function Star( $cell, type, html, classNames, dataTypeNames ){
     this.$cell = $cell;
     this.type = type;
@@ -86,7 +90,7 @@ $(function(){
 
   Star.prototype = {
     // prototypeのconstructor参照が消えないように
-    'constructor': Storage,
+    'constructor': Star,
 
     // お気に入りボタンが設置されたセルの文字列を取得して返す
     // この時、管理に不要な巻数やサブタイトルなどは除去する
@@ -105,13 +109,13 @@ $(function(){
 
     // お気に入りボタンの属性値取得(bool)
     'getCondition': function(){
-      var dataTypeName = 'data-' + this.dataTypeNames.condition;
+      var dataTypeName = 'data-' + this.dataTypeNames.favorite;
       return this.$star.get( 0 ).getAttribute( dataTypeName );
     },
 
     // お気に入りボタンの属性値を引数で書き換え(bool)
     'setCondition': function( condition ){
-      var dataTypeName = 'data-' + this.dataTypeNames.condition;
+      var dataTypeName = 'data-' + this.dataTypeNames.favorite;
       this.$star.get( 0 ).setAttribute( dataTypeName, condition );
     },
 
@@ -124,7 +128,7 @@ $(function(){
 
     // 現在のお気に入り状態を取得(bool)
     'isFavorite': function(){
-      var dataTypeName = 'data-' + this.dataTypeNames.condition;
+      var dataTypeName = 'data-' + this.dataTypeNames.favorite;
       return this.getCondition( this.$star, dataTypeName ) === 'true';
     },
 
@@ -184,6 +188,63 @@ $(function(){
 
 
 
+  // ------------------------
+  // 表示をお気に入りだけに絞り込む機能
+  // ------------------------
+
+  function RefineHightLight( $table, $addTarget, html, classNames, dataTypeNames ){
+    this.$table = $table;
+    this.$addTarget = $addTarget;
+    this.$button = $( html.refineButton ).clone( false );
+    this.className = classNames.refineButton;
+    this.dataTypeNames = dataTypeNames;
+    this.render();
+    this.events();
+  }
+
+  RefineHightLight.prototype = {
+    // prototypeのconstructor参照が消えないように
+    'constructor': RefineHightLight,
+
+    // 絞り込みボタンの属性値取得(bool)
+    'getCondition': function(){
+      var dataTypeName = 'data-' + this.dataTypeNames.refine;
+      return this.$table.get( 0 ).getAttribute( dataTypeName );
+    },
+
+    // 絞り込みボタンの属性値を引数で書き換え(bool)
+    'setCondition': function( condition ){
+      var dataTypeName = 'data-' + this.dataTypeNames.refine;
+      this.$table.get( 0 ).setAttribute( dataTypeName, condition );
+      this.$button.get( 0 ).setAttribute( dataTypeName, condition );
+    },
+
+    // 絞り込みボタンの属性値をトグルして書き換え(bool)
+    'toggleCondition': function(){
+      var latestCondition = this.getCondition();
+      var reversedCondition = latestCondition === 'true' ? false : true ;
+      this.setCondition( reversedCondition ); // 属性値の書き換え
+    },
+
+    // 絞り込みボタンのイベントを設置
+    'events': function(){
+      var that = this;
+      this.$button.on('click', function(){
+        that.toggleCondition(); // 属性値を書き換え
+      });
+    },
+
+    // 絞り込みボタンをDOMに描画
+    'render': function(){
+      var lastCondition = false; // Storageクラスを汎用化できるまではfalse返す
+      this.setCondition( lastCondition ); // tableに現在の絞り込みの可否を付与
+      this.$button.addClass( this.className ); // 絞り込みボタンにクラス名付与
+      this.$addTarget.prepend( this.$button ); // 絞り込みボタンの設置
+    }
+  };
+
+
+
   // =========================
   // functions
   // =========================
@@ -204,8 +265,15 @@ $(function(){
   // HTML
   // =========================
   var html = { // extentionが使うHTML
-    'star': [
+    'star': [ // ★ボタン
       '<span></span>'
+    ].join(''),
+
+    'refineButton': [ // お気に入りだけ表示ボタン
+      '<span>',
+        '<span>お気に入りだけ表示</span>',
+        '<span>お気に入りだけ表示 解除</span>',
+      '</span>'
     ].join('')
   };
 
@@ -216,7 +284,8 @@ $(function(){
   // =========================
   var prefix = 'CRD'; // 接頭辞 CRD = comic release date
   var classNames = { // extentionが使用するクラス名
-    'starButton': [ prefix, 'starButton' ].join('-')
+    'starButton': [ prefix, 'starButton' ].join('-'),
+    'refineButton': [ prefix, 'refineButton' ].join('-')
   };
 
 
@@ -225,8 +294,9 @@ $(function(){
   // dataTypeNames
   // =========================
   var dataTypeNames = { // 状態保存に使うデータ属性名
-    'condition': 'favorite',
-    'hightlight': 'hightlight'
+    'favorite': 'favorite', // お気に入りの状態
+    'hightlight': 'hightlight', // ハイライトするかしないか
+    'refine': 'refine' // お気に入りのみ表示してるかしてないか
   };
 
 
@@ -246,7 +316,8 @@ $(function(){
   // target DOM at www.taiyosha.co.jp/comic/**
   // 太洋社サイトのクラス情報
   // =========================
-  var TAGETTABLE = '#right_box .table_box_new_book'; // 対象となる領
+  var REFINEBUTTONADDTARGET = '#sort_tab_detail'; // 表示日付の前半と後半を切り替えるリンク部分
+  var TARGETTABLE = '#right_box .table_box_new_book'; // 対象となる領
   var COMICTITLESCELL = 'comic_2_b'; // 対象となるセル：漫画のタイトル
   var AUTHORSCELL = 'comic_1_b'; // 対象となるセル：著者
   var TARGETCELL = '.' + COMICTITLESCELL + ',.' + AUTHORSCELL;
@@ -259,10 +330,24 @@ $(function(){
   var storage = new Storage( STORAGEKEY, keywords );
 
   // 対象のすべてのセルに★を設置する
-  var $targetTableCell = $( TARGETCELL, TAGETTABLE ); // キャッシュ
-  $targetTableCell.get().forEach(function( element ){ // 高速化でやっているけどまだ遅い
+  var $targetTableCell = $( TARGETCELL, TARGETTABLE ); // キャッシュ
+  var cellsLength = $targetTableCell.length - 1;
+
+  $targetTableCell.get().forEach(function( element, index ){ // 高速化でやっているけどまだ遅い
     var $this = $( element );
     var type = _getTargetCellType( $this, COMICTITLESCELL, AUTHORSCELL );
     var star = new Star( $this, type, html, classNames, dataTypeNames );
+
+    // すべてのセルに★ボタンを追加完了したら、
+    // お気に入りだけを表示するためのボタンを設置
+    if( cellsLength === index ){
+      var refineHightLight = new RefineHightLight(
+        $( TARGETTABLE ), // お気に入りだけ表示のdata属性設置のためにつかう
+        $( REFINEBUTTONADDTARGET ), // お気に入りだけ表示ボタンの設置先
+        html, // ボタンのhtml
+        classNames, // ボタンのクラス名
+        dataTypeNames // お気に入りだけ表示のdata属性名
+      );
+    }
   });
 });
