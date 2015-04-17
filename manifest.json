@@ -1,16 +1,16 @@
 {
   "manifest_version": 2,
-  "name": "CRD",
-  "version": "0.1.1",
+  "name": "漫画本の発売日",
+  "version": "0.1.2",
   
-  "description": "お気に入りの漫画本をハイライトします",
+  "description": "お気に入りした漫画本の発売日をハイライトします",
   "icons": {
     "48": "icon.png",
     "128": "icon.png"
   },
 
   "browser_action": {
-    "default_title": "CRD v0.1.1",
+    "default_title": "v0.1.2",
     "default_icon": "icon.png",
     "default_popup": "popup.html"
   },
