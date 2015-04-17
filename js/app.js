@@ -90,7 +90,7 @@ $(function(){
 
   Star.prototype = {
     // prototypeのconstructor参照が消えないように
-    'constructor': Storage,
+    'constructor': Star,
 
     // お気に入りボタンが設置されたセルの文字列を取得して返す
     // この時、管理に不要な巻数やサブタイトルなどは除去する
