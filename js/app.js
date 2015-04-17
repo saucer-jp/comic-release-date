@@ -226,6 +226,7 @@ $(function(){
       this.setCondition( reversedCondition ); // 属性値の書き換え
     },
 
+    // 絞り込みボタンのイベントを設置
     'events': function(){
       var that = this;
       this.$button.on('click', function(){
@@ -233,6 +234,7 @@ $(function(){
       });
     },
 
+    // 絞り込みボタンをDOMに描画
     'render': function(){
       var lastCondition = false; // Storageクラスを汎用化できるまではfalse返す
       this.setCondition( lastCondition ); // tableに現在の絞り込みの可否を付与
@@ -263,10 +265,11 @@ $(function(){
   // HTML
   // =========================
   var html = { // extentionが使うHTML
-    'star': [
+    'star': [ // ★ボタン
       '<span></span>'
     ].join(''),
-    'refineButton': [
+
+    'refineButton': [ // お気に入りだけ表示ボタン
       '<span>',
         '<span>お気に入りだけ表示</span>',
         '<span>お気に入りだけ表示 解除</span>',
@@ -291,9 +294,9 @@ $(function(){
   // dataTypeNames
   // =========================
   var dataTypeNames = { // 状態保存に使うデータ属性名
-    'favorite': 'favorite',
-    'hightlight': 'hightlight',
-    'refine': 'refine'
+    'favorite': 'favorite', // お気に入りの状態
+    'hightlight': 'hightlight', // ハイライトするかしないか
+    'refine': 'refine' // お気に入りのみ表示してるかしてないか
   };
 
 
@@ -336,9 +339,16 @@ $(function(){
     var type = _getTargetCellType( $this, COMICTITLESCELL, AUTHORSCELL );
     var star = new Star( $this, type, html, classNames, dataTypeNames );
 
-    // すべてのセルに★ボタンを追加したら、お気に入りだけ表示するボタンを設置
+    // すべてのセルに★ボタンを追加完了したら、
+    // お気に入りだけを表示するためのボタンを設置
     if( cellsLength === index ){
-      refineHightLight = new RefineHightLight( $( TARGETTABLE ), $( REFINEBUTTONADDTARGET ), html, classNames, dataTypeNames );
+      refineHightLight = new RefineHightLight(
+        $( TARGETTABLE ), // お気に入りだけ表示のdata属性設置のためにつかう
+        $( REFINEBUTTONADDTARGET ), // お気に入りだけ表示ボタンの設置先
+        html, // ボタンのhtml
+        classNames, // ボタンのクラス名
+        dataTypeNames // お気に入りだけ表示のdata属性名
+      );
     }
   });
 });
