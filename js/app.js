@@ -328,7 +328,6 @@ $(function(){
   // action
   // =========================
   var storage = new Storage( STORAGEKEY, keywords );
-  var refineHightLight = null;
 
   // 対象のすべてのセルに★を設置する
   var $targetTableCell = $( TARGETCELL, TARGETTABLE ); // キャッシュ
@@ -342,7 +341,7 @@ $(function(){
     // すべてのセルに★ボタンを追加完了したら、
     // お気に入りだけを表示するためのボタンを設置
     if( cellsLength === index ){
-      refineHightLight = new RefineHightLight(
+      var refineHightLight = new RefineHightLight(
         $( TARGETTABLE ), // お気に入りだけ表示のdata属性設置のためにつかう
         $( REFINEBUTTONADDTARGET ), // お気に入りだけ表示ボタンの設置先
         html, // ボタンのhtml
