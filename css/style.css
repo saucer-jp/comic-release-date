@@ -1,3 +1,6 @@
+/* ******************** */
+/* お気に入りボタン */
+/* ******************** */
 .CRD-starButton:after {
   content: '★';
   display: inline-block;
@@ -7,6 +10,16 @@
   color: #ccc;
   background: transparent;
 }
+.CRD-starButton[data-favorite="true"]:after {
+  color: #ff6420;
+  background: transparent;
+}
+
+
+
+/* ******************** */
+/* テーブルの行 */
+/* ******************** */
 td:hover {
   cursor: pointer;
 }
@@ -21,21 +34,49 @@ tr[data-hightlight02="true"] td:hover .CRD-starButton:after {
   background: #ddd;
   color: #ff6420;
 }
-.CRD-starButton[data-favorite="true"]:after {
-  color: #ff6420;
-  background: transparent;
-}
 #wrapper tr[data-hightlight01="true"] td ,
 #wrapper tr[data-hightlight02="true"] td {
   background-color: #ddff7d;
 }
-#wrapper tr[data-hightlight01="true"] .comic_2_b ,
-#wrapper tr[data-hightlight02="true"] .comic_1_b {
-  /*
-  color: #ff6420;
-  */
+
+
+
+/* ******************** */
+/* お気に入りだけ表示ボタン */
+/* ******************** */
+.CRD-refineButton {
+  float: right;
+  text-decoration: underline;
+  color: #3264ff;
+}
+.CRD-refineButton:hover {
+  cursor: pointer;
+  text-decoration: none;
+}
+.CRD-refineButton[data-refine="true"] :first-child,
+.CRD-refineButton[data-refine="false"] :last-child {
+  display: none;
 }
 
+
+
+/* ******************** */
+/* お気に入りだけ表示中の表示制御 */
+/* ******************** */
+#wrapper table[data-refine="true"] tr,
+#wrapper table[data-refine="true"] tr {
+  display: none;
+}
+#wrapper table[data-refine="true"] tr[data-hightlight01="true"],
+#wrapper table[data-refine="true"] tr[data-hightlight02="true"] {
+  display: table-row;
+}
+
+
+
+/* ******************** */
+/* 既存テーブルのデザイン調整 */
+/* ******************** */
 #wrapper #container {
   width: auto;
 }
@@ -58,31 +99,4 @@ tr[data-hightlight02="true"] td:hover .CRD-starButton:after {
   width: auto;
   min-width: 60px;
   padding: 6px 8px;
-}
-
-
-
-
-
-.CRD-refineButton {
-  float: right;
-  text-decoration: underline;
-  color: #3264ff;
-}
-.CRD-refineButton:hover {
-  cursor: pointer;
-  text-decoration: none;
-}
-.CRD-refineButton[data-refine="true"] :first-child,
-.CRD-refineButton[data-refine="false"] :last-child {
-  display: none;
-}
-
-#wrapper table[data-refine="true"] tr,
-#wrapper table[data-refine="true"] tr {
-  display: none;
-}
-#wrapper table[data-refine="true"] tr[data-hightlight01="true"],
-#wrapper table[data-refine="true"] tr[data-hightlight02="true"] {
-  display: table-row;
 }

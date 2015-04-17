@@ -163,7 +163,7 @@ $(function(){
 
       // お気に入りボタンクリックで発火
       // ひとつのインスタンスがクリックされたら、すべてのインスタンスが発火
-      $('.' + this.className ).closest('tbody').on('click', function(){
+      this.$cell.closest('tbody').on('click', function(){
         that.render( true ); // お気に入り情報のリフレッシュ
       });
     },
