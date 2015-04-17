@@ -38,12 +38,6 @@ tr[data-hightlight02="true"] td:hover .CRD-starButton:after {
 #wrapper tr[data-hightlight02="true"] td {
   background-color: #ddff7d;
 }
-#wrapper tr[data-hightlight01="true"] .comic_2_b ,
-#wrapper tr[data-hightlight02="true"] .comic_1_b {
-  /*
-  color: #ff6420;
-  */
-}
 
 
 
