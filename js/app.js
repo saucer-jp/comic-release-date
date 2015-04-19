@@ -98,8 +98,9 @@ $(function(){
       var result = this.$cell.remove( '.' + this.className ).text();
       if( type === '01' ){ // 書名
         // 書名の正規表現は完全なタイトルを抽出するのではなく、大体合うレベル
-        result = result.match( /\S+　?\S*　?/, '' ).toString(); // 漫画タイトルの先頭から全角スペース２つ分の文字を取得
-        result = result.replace( /　[０-９]+.*$/, '' ); // 巻数とサブタイトルを削除
+        result = result.match( /\S+　?\S*　?/, '' ); // 漫画タイトルの先頭から全角スペース２つ分の文字を取得
+        if( result === null ) return null; // 値の取得ができなければnullを返す
+        result = result.toString().replace( /　[０-９]+.*$/, '' ); // 巻数とサブタイトルを削除
       }
       //else if( type === '02' ){ // 著者
         // 著者はそのままなので、連名の著者の場合は個人名にはヒットしなくなる
@@ -148,6 +149,7 @@ $(function(){
       // クリックされたインスタンスのみが発火
       this.$star.closest('td').on('click', function(){
         var keyword = that.getKeyword( that.type );
+        if( keyword === null ) return; // 値を取得出来ていなかったらeventを設置しない
         // お気に入りだったら、お気に入りはずす
         // ローカルストレージから値の削除
         if( that.isFavorite() ){
@@ -171,6 +173,7 @@ $(function(){
     // お気に入りボタンをDOMに描画
     'render': function( refresh ){
       var lastCondition = storage.hasKeyword( this.type, this.getKeyword( this.type ) );
+      if( lastCondition === null ) return; // 値を取得出来ていなかったらrenderしない
       // 引数がtrueだった場合は要素の設置は行わず
       // 属性値の更新だけを行う
       if( refresh === true ){
