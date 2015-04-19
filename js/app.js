@@ -47,7 +47,7 @@ $(function(){
     // 引数に与えられたkeywordをメモリ上のtype配列に追加、
     // その後ローカルストレージに保存
     'setKeyword': function( type, keyword ){
-      console.log( keyword );
+      console.log( type + ': ' + keyword );
       if( this.keywords[ type ].indexOf( keyword ) >= 0 ) return; //重複確認。すでにキーワードが保存されていれば終了
       this.keywords[ type ].push( keyword ); // 値の追加
       this.save(); // ローカルストレージに保存
@@ -252,12 +252,18 @@ $(function(){
   // functions
   // =========================
   // 引数のセルに漫画タイトルと著者のどちらが入っているか判定
-  function _getTargetCellType( $cell, COMICTITLESCELL, AUTHORSCELL ){
+  function _getTargetCellType( $cell ){
     var className = $cell.attr('class');
-    if( className === COMICTITLESCELL ){
+    if(
+      className.indexOf( 'comic_2_b' ) === 0 ||
+      className.indexOf( 'comic_3_a' ) === 0
+    ){
       return '01'; // 書名
     }
-    else if( className === AUTHORSCELL ){
+    else if(
+      className.indexOf( 'comic_1_b' ) === 0 ||
+      className.indexOf( 'comic_2_a' ) === 0
+    ){
       return '02'; // 著者
     }
   }
@@ -321,9 +327,16 @@ $(function(){
   // =========================
   var REFINEBUTTONADDTARGET = '#sort_tab_detail'; // 表示日付の前半と後半を切り替えるリンク部分
   var TARGETTABLE = '#right_box .table_box_new_book'; // 対象となる領
-  var COMICTITLESCELL = 'comic_2_b'; // 対象となるセル：漫画のタイトル
-  var AUTHORSCELL = 'comic_1_b'; // 対象となるセル：著者
-  var TARGETCELL = '.' + COMICTITLESCELL + ',.' + AUTHORSCELL;
+  var COMICTITLESCELL_A = 'comic_3_a'; // 対象となるセル：漫画のタイトル
+  var AUTHORSCELL_A = 'comic_2_a'; // 対象となるセル：著者
+  var COMICTITLESCELL_B = 'comic_2_b'; // 対象となるセル：漫画のタイトル
+  var AUTHORSCELL_B = 'comic_1_b'; // 対象となるセル：著者
+  var TARGETCELL = [
+    '.' + COMICTITLESCELL_A + ',',
+    '.' + AUTHORSCELL_A + ',',
+    '.' + COMICTITLESCELL_B + ',',
+    '.' + AUTHORSCELL_B
+  ].join('');
 
 
 
@@ -338,7 +351,7 @@ $(function(){
 
   $targetTableCell.get().forEach(function( element, index ){ // 高速化でやっているけどまだ遅い
     var $this = $( element );
-    var type = _getTargetCellType( $this, COMICTITLESCELL, AUTHORSCELL );
+    var type = _getTargetCellType( $this );
     var star = new Star( $this, type, html, classNames, dataTypeNames );
 
     // すべてのセルに★ボタンを追加完了したら、
