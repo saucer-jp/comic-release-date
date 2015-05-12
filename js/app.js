@@ -95,16 +95,20 @@ $(function(){
     // お気に入りボタンが設置されたセルの文字列を取得して返す
     // この時、管理に不要な巻数やサブタイトルなどは除去する
     'getKeyword': function( type ){
-      var result = this.$cell.remove( '.' + this.className ).text();
+      var result = null;
       if( type === '01' ){ // 書名
+        var _$cell = this.$cell.clone( true ); // DOM上のものを消せないのでディープコピー
+        result = _$cell.find('br').prev().remove(); // シリーズ名を削除
+        result = _$cell.remove( '.' + this.className ).text();
         // 書名の正規表現は完全なタイトルを抽出するのではなく、大体合うレベル
         result = result.match( /\S+　?\S*　?/, '' ); // 漫画タイトルの先頭から全角スペース２つ分の文字を取得
         if( result === null ) return null; // 値の取得ができなければnullを返す
         result = result.toString().replace( /　[０-９]+.*$/, '' ); // 巻数とサブタイトルを削除
       }
-      //else if( type === '02' ){ // 著者
+      else if( type === '02' ){ // 著者
         // 著者はそのままなので、連名の著者の場合は個人名にはヒットしなくなる
-      //}
+        result = this.$cell.remove( '.' + this.className ).text();
+      }
       return result;
     },
 
