@@ -183,7 +183,13 @@ $(function(){
       else {
         this.setCondition( lastCondition ); // お気に入りボタンに現在のお気に入り状態付与
         this.$star.addClass( this.className ); // お気に入りボタンにクラス名付与
-        this.$cell.prepend( this.$star ); // お気に入りボタンの設置
+        // 元サイトの構造が変わったのでtype判定して分岐
+        if( this.type === '01' ){ // 書名
+          this.$cell.find('br').after( this.$star ); // お気に入りボタンの設置
+        }
+        else if( this.type === '02' ){ // 著者
+          this.$cell.prepend( this.$star ); // お気に入りボタンの設置
+        }
         this.paintHightlight(); // ハイライトの描画
       }
     }
